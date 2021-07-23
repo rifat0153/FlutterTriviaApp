@@ -1,0 +1,23 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+  - "**/*.g.dart"
+  - "**/*.gr.dart"
+  - "**/*.iconfig.dart"
+  - "**/*.freezed.dart"
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: true
+  
+
+
+linter:
+  rules:
+    public_member_api_docs: false
+    lines_longer_than_80_chars: false
+    Don't type annotate initializing formals: false
+    omit_local_variable_types: false
+    use_key_in_widget_constructors: false
+    prefer_const_literals_to_create_immutables: false
+    lowercase_with_underscores: false
