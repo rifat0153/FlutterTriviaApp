@@ -11,7 +11,7 @@ class TriviaService {
   final Reader _read;
 
   Future<Trivia> getTrivia() async {
-    await Future.delayed(Duration(seconds: 1), () {});
-    return await Future.value(Trivia(text: 'test'));
+    await Future.delayed(const Duration(seconds: 1), () {});
+    return await Future.value(const Trivia(text: 'test'));
   }
 }

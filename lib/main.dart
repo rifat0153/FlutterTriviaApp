@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:trivia/features/quiz/quiz_view.dart';
 import 'features/theme/theme_controller.dart';
 import 'features/trivia/trivia_view.dart';
 
@@ -37,11 +38,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Consumer(builder: (context, watch, child) {
-        final themeNotifier = watch(themeControllerProvider.notifier);
-
-        return TriviaView();
-      })),
+      body: QuizView(),
     );
   }
 }
