@@ -9,9 +9,8 @@ class QuizView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
+      backgroundColor: const Color(0xFFEDF3F6),
       appBar: AppBar(
         title: const Text('Quizera'),
         actions: [const ThemeSwitch()],
@@ -61,7 +60,7 @@ class QuizView extends StatelessWidget {
         children: [
           _buildUserImageAndName(),
           SizedBox(
-            height: 100.sp,
+            height: 70.sp,
           ),
           Expanded(
             child: Container(
@@ -94,6 +93,12 @@ class QuizView extends StatelessWidget {
                       ),
                       SizedBox(width: 30.w),
                     ],
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 3.h),
+                      child: const _BuildQuizTopicGrid(),
+                    ),
                   )
                 ],
               ),
@@ -113,11 +118,11 @@ class QuizView extends StatelessWidget {
             bottomRight: QuizConfig.profileContainerRadius,
           ),
           gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
             colors: [
               Colors.blue,
-              Colors.blue.shade300,
+              Colors.blue.shade200,
             ],
           )),
       child: Column(
@@ -143,6 +148,57 @@ class QuizView extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _BuildQuizTopicGrid extends StatelessWidget {
+  const _BuildQuizTopicGrid({
+    Key? key,
+  }) : super(key: key);
+
+  static const List<String> topics = [
+    'Mathematics',
+    'Science',
+    'Drama',
+    'Sports',
+    'Entertainment',
+    'Gaming',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+      ),
+      itemCount: topics.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: kPadding, vertical: kPadding),
+          child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+            // elevation: 5,
+            child: Column(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset('$imagePath${topics[index]}.png'),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0.sp),
+                  child: Text(
+                    topics[index],
+                    style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

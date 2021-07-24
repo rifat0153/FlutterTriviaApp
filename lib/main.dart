@@ -16,7 +16,7 @@ class MyApp extends ConsumerWidget {
     final myThemeData = watch(themeControllerProvider);
 
     return ScreenUtilInit(
-      designSize:const Size(392, 781),
+      designSize: const Size(392, 781),
       builder: () => MaterialApp(
         debugShowCheckedModeBanner: false,
         // themeMode: myThemeData,
@@ -39,10 +39,38 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool darkMode = false;
 
+  static const List<Widget> _widgetOptions = <Widget>[
+    QuizView(),
+    TriviaView(),
+  ];
+
+  int _selectedIndex = 0;
+
+  List<BottomNavigationBarItem> bottomNavBarItems = [
+    const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+    const BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Star'),
+  ];
+
+  void _onTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: QuizView(),
+      bottomNavigationBar: BottomNavigationBar(
+        items: bottomNavBarItems,
+        currentIndex: _selectedIndex,
+        onTap: _onTapped,
+        showUnselectedLabels: false,
+        selectedItemColor: Colors.cyan,
+        type: BottomNavigationBarType.shifting,
+        backgroundColor: Colors.grey,
+        unselectedItemColor: Colors.amber,
+      ),
+      body: _widgetOptions.elementAt(_selectedIndex),
     );
   }
 }

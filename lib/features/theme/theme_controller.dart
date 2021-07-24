@@ -4,7 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class MyThemes {
   static final darkTheme = ThemeData(
     scaffoldBackgroundColor: Colors.grey.shade900,
-   colorScheme: ColorScheme.dark()
+    
+    colorScheme: const ColorScheme.dark(),
   );
 
   static final lightTheme = ThemeData(
