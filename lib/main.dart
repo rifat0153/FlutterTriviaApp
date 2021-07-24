@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:trivia/features/quiz/quiz_view.dart';
 import 'features/theme/theme_controller.dart';
 import 'features/trivia/trivia_view.dart';
@@ -14,13 +15,16 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final myThemeData = watch(themeControllerProvider);
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // themeMode: myThemeData,
-      title: 'Flutter Demo',
-      theme: myThemeData,
-      darkTheme: MyThemes.darkTheme,
-      home: const Home(),
+    return ScreenUtilInit(
+      designSize:const Size(392, 781),
+      builder: () => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        // themeMode: myThemeData,
+        title: 'Flutter Demo',
+        theme: myThemeData,
+        darkTheme: MyThemes.darkTheme,
+        home: const Home(),
+      ),
     );
   }
 }
