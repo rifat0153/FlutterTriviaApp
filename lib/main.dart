@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:trivia/features/quiz/quiz_view.dart';
+import 'package:trivia/features/quiz/views/home_view.dart';
 import 'features/theme/theme_controller.dart';
 import 'features/trivia/trivia_view.dart';
 
@@ -23,24 +23,24 @@ class MyApp extends ConsumerWidget {
         title: 'Flutter Demo',
         theme: myThemeData,
         darkTheme: MyThemes.darkTheme,
-        home: const Home(),
+        home: const InitialView(),
       ),
     );
   }
 }
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class InitialView extends StatefulWidget {
+  const InitialView({Key? key}) : super(key: key);
 
   @override
-  _HomeState createState() => _HomeState();
+  _InitialViewState createState() => _InitialViewState();
 }
 
-class _HomeState extends State<Home> {
+class _InitialViewState extends State<InitialView> {
   bool darkMode = false;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    QuizView(),
+    HomeView(),
     TriviaView(),
   ];
 
@@ -66,8 +66,8 @@ class _HomeState extends State<Home> {
         onTap: _onTapped,
         showUnselectedLabels: false,
         selectedItemColor: Colors.cyan,
-        type: BottomNavigationBarType.shifting,
-        backgroundColor: Colors.grey,
+        // type: BottomNavigationBarType.shifting,
+        // backgroundColor: Colors.grey,
         unselectedItemColor: Colors.amber,
       ),
       body: _widgetOptions.elementAt(_selectedIndex),

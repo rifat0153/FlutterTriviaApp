@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trivia/features/quiz/config.dart';
+import 'package:trivia/features/quiz/controllers/quiz_main_controller.dart';
+import 'package:trivia/features/quiz/views/quiz_main_view.dart';
 import 'package:trivia/shared/theme_switch.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class QuizView extends StatelessWidget {
-  const QuizView({Key? key}) : super(key: key);
+class HomeView extends StatelessWidget {
+  const HomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,45 +66,43 @@ class QuizView extends StatelessWidget {
             height: 70.sp,
           ),
           Expanded(
-            child: Container(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(width: 30.w),
-                      Text(
-                        'Top Quiz Categories',
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    SizedBox(width: 30.w),
+                    Text(
+                      'Top Quiz Categories',
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
                       ),
-                      const Spacer(),
-                      TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                          alignment: Alignment.center,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
-                          textStyle: TextStyle(color: Colors.cyan, fontSize: 15.sp),
-                          padding: EdgeInsets.symmetric(horizontal: 20.w),
-                          backgroundColor: Colors.cyan.shade200,
-                        ),
-                        child: const Text(
-                          'View All',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      SizedBox(width: 30.w),
-                    ],
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 3.h),
-                      child: const _BuildQuizTopicGrid(),
                     ),
-                  )
-                ],
-              ),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () {},
+                      style: TextButton.styleFrom(
+                        alignment: Alignment.center,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+                        textStyle: TextStyle(color: Colors.cyan, fontSize: 15.sp),
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        backgroundColor: Colors.cyan.shade200,
+                      ),
+                      child: const Text(
+                        'View All',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(width: 30.w),
+                  ],
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 3.h),
+                    child: const _BuildQuizTopicGrid(),
+                  ),
+                )
+              ],
             ),
           )
         ],
@@ -152,12 +153,12 @@ class QuizView extends StatelessWidget {
   }
 }
 
-class _BuildQuizTopicGrid extends StatelessWidget {
+class _BuildQuizTopicGrid extends ConsumerWidget {
   const _BuildQuizTopicGrid({
     Key? key,
   }) : super(key: key);
 
-  static const List<String> topics = [
+  static const List<String> categories = [
     'Mathematics',
     'Science',
     'Drama',
@@ -167,34 +168,40 @@ class _BuildQuizTopicGrid extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
       ),
-      itemCount: topics.length,
+      itemCount: categories.length,
       itemBuilder: (BuildContext context, int index) {
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: kPadding, vertical: kPadding),
-          child: Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-            // elevation: 5,
-            child: Column(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset('$imagePath${topics[index]}.png'),
+          padding: const EdgeInsets.symmetric(horizontal: kPadding, vertical: kPadding),
+          child: GestureDetector(
+            onTap: () {
+              context.read(quizMainControllerProvider).setCurrentQuizCategory(categories[index]);
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => const QuizMainView()));
+            },
+            child: Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+              // elevation: 5,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset('$imagePath${categories[index]}.png'),
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(8.0.sp),
-                  child: Text(
-                    topics[index],
-                    style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500),
+                  Padding(
+                    padding: EdgeInsets.all(8.0.sp),
+                    child: Text(
+                      categories[index],
+                      style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
