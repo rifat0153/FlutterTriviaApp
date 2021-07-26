@@ -9,15 +9,25 @@ class QuizMainView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     QuizMainController quizMainController = watch(quizMainControllerProvider);
+    final quizListController = watch(quizListControllerProvider);
 
     return Scaffold(
       body: Center(
         child: TextButton(
-          onPressed: () async {
-           await context.read(quizListControllerProvider.notifier).retrieveQuizList();
+          onPressed: () {
+            context.read(quizListControllerProvider.notifier).retrieveQuizList();
           },
-          child: const Text('Get Data'),
+          child: quizListController.when(
+              data: (data) => Text(data.length.toString()),
+              loading: () => const CircularProgressIndicator(),
+              error: (e, s) => Text(e.toString())),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await context.read(quizListControllerProvider.notifier).retrieveQuizList();
+        },
+        child: Icon(Icons.get_app),
       ),
     );
   }

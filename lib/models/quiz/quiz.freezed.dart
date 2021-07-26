@@ -25,15 +25,15 @@ class _$QuizTearOff {
       required String type,
       required String difficulty,
       required String question,
-      required String correctAnswer,
-      required List<String> incorrectAnswers}) {
+      required String correct_answer,
+      required List<String> incorrect_answers}) {
     return _Quiz(
       category: category,
       type: type,
       difficulty: difficulty,
       question: question,
-      correctAnswer: correctAnswer,
-      incorrectAnswers: incorrectAnswers,
+      correct_answer: correct_answer,
+      incorrect_answers: incorrect_answers,
     );
   }
 
@@ -51,8 +51,8 @@ mixin _$Quiz {
   String get type => throw _privateConstructorUsedError;
   String get difficulty => throw _privateConstructorUsedError;
   String get question => throw _privateConstructorUsedError;
-  String get correctAnswer => throw _privateConstructorUsedError;
-  List<String> get incorrectAnswers => throw _privateConstructorUsedError;
+  String get correct_answer => throw _privateConstructorUsedError;
+  List<String> get incorrect_answers => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -68,8 +68,8 @@ abstract class $QuizCopyWith<$Res> {
       String type,
       String difficulty,
       String question,
-      String correctAnswer,
-      List<String> incorrectAnswers});
+      String correct_answer,
+      List<String> incorrect_answers});
 }
 
 /// @nodoc
@@ -86,8 +86,8 @@ class _$QuizCopyWithImpl<$Res> implements $QuizCopyWith<$Res> {
     Object? type = freezed,
     Object? difficulty = freezed,
     Object? question = freezed,
-    Object? correctAnswer = freezed,
-    Object? incorrectAnswers = freezed,
+    Object? correct_answer = freezed,
+    Object? incorrect_answers = freezed,
   }) {
     return _then(_value.copyWith(
       category: category == freezed
@@ -106,13 +106,13 @@ class _$QuizCopyWithImpl<$Res> implements $QuizCopyWith<$Res> {
           ? _value.question
           : question // ignore: cast_nullable_to_non_nullable
               as String,
-      correctAnswer: correctAnswer == freezed
-          ? _value.correctAnswer
-          : correctAnswer // ignore: cast_nullable_to_non_nullable
+      correct_answer: correct_answer == freezed
+          ? _value.correct_answer
+          : correct_answer // ignore: cast_nullable_to_non_nullable
               as String,
-      incorrectAnswers: incorrectAnswers == freezed
-          ? _value.incorrectAnswers
-          : incorrectAnswers // ignore: cast_nullable_to_non_nullable
+      incorrect_answers: incorrect_answers == freezed
+          ? _value.incorrect_answers
+          : incorrect_answers // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ));
   }
@@ -128,8 +128,8 @@ abstract class _$QuizCopyWith<$Res> implements $QuizCopyWith<$Res> {
       String type,
       String difficulty,
       String question,
-      String correctAnswer,
-      List<String> incorrectAnswers});
+      String correct_answer,
+      List<String> incorrect_answers});
 }
 
 /// @nodoc
@@ -147,8 +147,8 @@ class __$QuizCopyWithImpl<$Res> extends _$QuizCopyWithImpl<$Res>
     Object? type = freezed,
     Object? difficulty = freezed,
     Object? question = freezed,
-    Object? correctAnswer = freezed,
-    Object? incorrectAnswers = freezed,
+    Object? correct_answer = freezed,
+    Object? incorrect_answers = freezed,
   }) {
     return _then(_Quiz(
       category: category == freezed
@@ -167,13 +167,13 @@ class __$QuizCopyWithImpl<$Res> extends _$QuizCopyWithImpl<$Res>
           ? _value.question
           : question // ignore: cast_nullable_to_non_nullable
               as String,
-      correctAnswer: correctAnswer == freezed
-          ? _value.correctAnswer
-          : correctAnswer // ignore: cast_nullable_to_non_nullable
+      correct_answer: correct_answer == freezed
+          ? _value.correct_answer
+          : correct_answer // ignore: cast_nullable_to_non_nullable
               as String,
-      incorrectAnswers: incorrectAnswers == freezed
-          ? _value.incorrectAnswers
-          : incorrectAnswers // ignore: cast_nullable_to_non_nullable
+      incorrect_answers: incorrect_answers == freezed
+          ? _value.incorrect_answers
+          : incorrect_answers // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ));
   }
@@ -187,8 +187,8 @@ class _$_Quiz implements _Quiz {
       required this.type,
       required this.difficulty,
       required this.question,
-      required this.correctAnswer,
-      required this.incorrectAnswers});
+      required this.correct_answer,
+      required this.incorrect_answers});
 
   factory _$_Quiz.fromJson(Map<String, dynamic> json) =>
       _$_$_QuizFromJson(json);
@@ -202,13 +202,13 @@ class _$_Quiz implements _Quiz {
   @override
   final String question;
   @override
-  final String correctAnswer;
+  final String correct_answer;
   @override
-  final List<String> incorrectAnswers;
+  final List<String> incorrect_answers;
 
   @override
   String toString() {
-    return 'Quiz(category: $category, type: $type, difficulty: $difficulty, question: $question, correctAnswer: $correctAnswer, incorrectAnswers: $incorrectAnswers)';
+    return 'Quiz(category: $category, type: $type, difficulty: $difficulty, question: $question, correct_answer: $correct_answer, incorrect_answers: $incorrect_answers)';
   }
 
   @override
@@ -226,12 +226,12 @@ class _$_Quiz implements _Quiz {
             (identical(other.question, question) ||
                 const DeepCollectionEquality()
                     .equals(other.question, question)) &&
-            (identical(other.correctAnswer, correctAnswer) ||
+            (identical(other.correct_answer, correct_answer) ||
                 const DeepCollectionEquality()
-                    .equals(other.correctAnswer, correctAnswer)) &&
-            (identical(other.incorrectAnswers, incorrectAnswers) ||
+                    .equals(other.correct_answer, correct_answer)) &&
+            (identical(other.incorrect_answers, incorrect_answers) ||
                 const DeepCollectionEquality()
-                    .equals(other.incorrectAnswers, incorrectAnswers)));
+                    .equals(other.incorrect_answers, incorrect_answers)));
   }
 
   @override
@@ -241,8 +241,8 @@ class _$_Quiz implements _Quiz {
       const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(difficulty) ^
       const DeepCollectionEquality().hash(question) ^
-      const DeepCollectionEquality().hash(correctAnswer) ^
-      const DeepCollectionEquality().hash(incorrectAnswers);
+      const DeepCollectionEquality().hash(correct_answer) ^
+      const DeepCollectionEquality().hash(incorrect_answers);
 
   @JsonKey(ignore: true)
   @override
@@ -261,8 +261,8 @@ abstract class _Quiz implements Quiz {
       required String type,
       required String difficulty,
       required String question,
-      required String correctAnswer,
-      required List<String> incorrectAnswers}) = _$_Quiz;
+      required String correct_answer,
+      required List<String> incorrect_answers}) = _$_Quiz;
 
   factory _Quiz.fromJson(Map<String, dynamic> json) = _$_Quiz.fromJson;
 
@@ -275,9 +275,9 @@ abstract class _Quiz implements Quiz {
   @override
   String get question => throw _privateConstructorUsedError;
   @override
-  String get correctAnswer => throw _privateConstructorUsedError;
+  String get correct_answer => throw _privateConstructorUsedError;
   @override
-  List<String> get incorrectAnswers => throw _privateConstructorUsedError;
+  List<String> get incorrect_answers => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$QuizCopyWith<_Quiz> get copyWith => throw _privateConstructorUsedError;

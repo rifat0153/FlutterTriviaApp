@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -26,62 +27,62 @@ class QuizService implements BaseQuizService {
 
     List<Quiz> quizList = [];
 
-    final response = await http
-        .get(Uri.parse('https://opentdb.com/api.php?amount=10&category=21&difficulty=medium&type=multiple'));
+    final url = Uri.https('www.opentdb.com', '/api.php', {
+      'amount': '2',
+      'category': '21',
+      'difficulty': 'medium',
+      'type': 'multiple',
+    });
 
-    if (response.statusCode == 200) {
-      var quizJsonLists = jsonDecode(response.body);
+    try {
+      final response = await http.get(url);
+      var json = jsonDecode(response.body) as Map<String, dynamic>;
+      var quizListJson = json['results'] as List<dynamic>;
+
+      print('Quiz List Json:\n' + quizListJson.toString());
+
+      for (var quizJson in quizListJson) {
+        // print('Quiz Class:\n' + quiz.toString());
+        Quiz quiz = Quiz.fromJson(quizJson as Map<String, dynamic>);
+
+        quizList.add(quiz);
+      }
 
       return quizList;
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load quizes');
+    } catch (e) {
+      print(e);
+      throw Exception(e);
     }
-  }
+    // on SocketException catch (e) {
+    //   print(e);
+    //   throw HttpException('Something went wrong : ${e.message}');
+    // } on HttpException catch (e) {
+    //   print(e);
+    //   throw HttpException('Something went wrong : ${e.message}');
+    // }
+    // final response = await http
+    //     .get(Uri.parse('https://opentdb.com/api.php?amount=10&category=21&difficulty=medium&type=multiple'));
 
-  Future<Album> fetchAlbum() async {
-    // var url = Uri.https('www.jsonplaceholder.typicode.com', '/albums/1');
-    // var url = "https://jsonplaceholder.typicode.com/albums/3";
-    // var parsedUrl = Uri.parse(url);
-    var url = Uri.https('jsonplaceholder.typicode.com', '/albums/3');
-    final response = await http.get(url);
-    // final response = await http.get(parsedUrl);
+    // print(response.statusCode);
 
-    print(jsonDecode(response.body));
+    // if (response.statusCode == 200) {
+    //   var json = jsonDecode(response.body) as Map<String, dynamic>;
+    //   List<dynamic> quizJsonList = json['results'] as List<dynamic>;
 
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      var parsed = Album.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+    //   print(quizJsonList);
 
-      print(parsed);
+    //   List<Quiz> quizList = [];
 
-      return parsed;
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load album');
-    }
-  }
-}
+    //   quizJsonList.forEach((quizJson) {
+    //     Quiz quiz = Quiz.fromJson(quizJson as Map<String, dynamic>);
+    //     quizList.add(quiz);
+    //   });
 
-class Album {
-  final int userId;
-  final int id;
-  final String title;
-
-  Album({
-    required this.userId,
-    required this.id,
-    required this.title,
-  });
-
-  factory Album.fromJson(Map<String, dynamic> json) {
-    return Album(
-      userId: json['userId'] as int,
-      id: json['id'] as int,
-      title: json['title'] as String,
-    );
+    //   return quizList;
+    // } else {
+    //   // If the server did not return a 200 OK response,
+    //   // then throw an exception.
+    //   throw Exception('Failed to load quizes');
+    // }
   }
 }
