@@ -11,10 +11,37 @@ class QuizMainController extends ChangeNotifier {
 
   final Reader _read;
 
+  bool gameStarted = false;
+
+  int currentQuestionIndex = 0;
+  int totalQuestions = 0;
+  int correctAnswers = 0;
+  int incorrectAnswers = 0;
+  int score = 0;
+
   String _currentQuizCategory = '';
+
   String _difficulty = 'easy';
 
-  // getters and setters
+  // methods
+  void calculateScore() {
+    score = totalQuestions - incorrectAnswers;
+    notifyListeners();
+  }
+
+// getters and setters
+  int getCurrentQuestionIndex() => currentQuestionIndex;
+  void setCurrentQuestionIndex(int value) {
+    currentQuestionIndex = value;
+    notifyListeners();
+  }
+
+  bool getGameStarted() => gameStarted;
+  set gameStated(bool value) {
+    gameStarted = value;
+    notifyListeners();
+  }
+
   String getCurrentQuizCategory() => _currentQuizCategory;
   void setCurrentQuizCategory(String category) {
     _currentQuizCategory = category;

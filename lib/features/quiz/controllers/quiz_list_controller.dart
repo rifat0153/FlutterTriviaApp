@@ -9,9 +9,11 @@ final quizListControllerProvider =
 });
 
 class QuizListController extends StateNotifier<AsyncValue<List<Quiz>>> {
-  QuizListController(this._read) : super(const AsyncValue.loading());
+  QuizListController(this._read) : super(const AsyncValue.data([]));
 
   Reader _read;
+
+  int index = 0;
 
   Future<void> retrieveQuizList() async {
     state = const AsyncValue.loading();
