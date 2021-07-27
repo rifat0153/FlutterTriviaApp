@@ -12,22 +12,25 @@ class QuizMainView extends ConsumerWidget {
     final quizListController = watch(quizListControllerProvider);
 
     return Scaffold(
-      body: Center(
-        child: TextButton(
-          onPressed: () {
-            context.read(quizListControllerProvider.notifier).retrieveQuizList();
-          },
-          child: quizListController.when(
-              data: (data) => Text(data.length.toString()),
-              loading: () => const CircularProgressIndicator(),
-              error: (e, s) => Text(e.toString())),
-        ),
+      body: SafeArea(
+        child: quizListController.when(
+            data: (data) => ListView.builder(
+                itemCount: data.length,
+                itemBuilder: (_, index) {
+                  return Card(
+                    child: ListTile(
+                      title: Text(data[index].question),
+                    ),
+                  );
+                }),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (e, s) => Text(e.toString())),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await context.read(quizListControllerProvider.notifier).retrieveQuizList();
         },
-        child: Icon(Icons.get_app),
+        child: const Icon(Icons.get_app),
       ),
     );
   }

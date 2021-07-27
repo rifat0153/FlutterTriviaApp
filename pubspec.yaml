@@ -28,7 +28,6 @@ dependencies:
   flutter_screenutil: ^5.0.0+2
 
   #  Internet
-  http: ^0.13.3
   dio: ^4.0.0
 
   very_good_analysis: null
