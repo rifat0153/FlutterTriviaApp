@@ -24,12 +24,10 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  dio: ^4.0.0
   flutter_riverpod: ^0.14.0+3
   flutter_screenutil: ^5.0.0+2
-
-  #  Internet
-  dio: ^4.0.0
-
+  uuid: ^3.0.4
   very_good_analysis: null
 
 dev_dependencies:

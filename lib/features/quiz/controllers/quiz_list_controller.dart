@@ -5,7 +5,7 @@ import 'package:trivia/models/quiz/quiz.dart';
 
 final quizListControllerProvider =
     StateNotifierProvider.autoDispose<QuizListController, AsyncValue<List<Quiz>>>((ref) {
-  return QuizListController(ref.read);
+  return QuizListController(ref.read)..retrieveQuizList();
 });
 
 class QuizListController extends StateNotifier<AsyncValue<List<Quiz>>> {
@@ -15,9 +15,27 @@ class QuizListController extends StateNotifier<AsyncValue<List<Quiz>>> {
 
   int index = 0;
 
+  void selectedAnswer(String id) {
+    
+  }
+
+  // void toggle(String id) {
+  //   state = [
+  //     for (final todo in state)
+  //       if (todo.id == id)
+  //         Todo(
+  //           id: todo.id,
+  //           completed: !todo.completed,
+  //           description: todo.description,
+  //         )
+  //       else
+  //         todo,
+  //   ];
+  // }
+
+
   Future<void> retrieveQuizList() async {
     state = const AsyncValue.loading();
-
     var difficulty = _read(quizMainControllerProvider).getCurrentQuizDifficulty();
 
     try {

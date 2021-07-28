@@ -21,13 +21,17 @@ class _$QuizTearOff {
   const _$QuizTearOff();
 
   _Quiz call(
-      {required String category,
+      {String? id,
+      String selectedAnswer = '',
+      required String category,
       required String type,
       required String difficulty,
       required String question,
       required String correct_answer,
       required List<String> incorrect_answers}) {
     return _Quiz(
+      id: id,
+      selectedAnswer: selectedAnswer,
       category: category,
       type: type,
       difficulty: difficulty,
@@ -47,6 +51,8 @@ const $Quiz = _$QuizTearOff();
 
 /// @nodoc
 mixin _$Quiz {
+  String? get id => throw _privateConstructorUsedError;
+  String get selectedAnswer => throw _privateConstructorUsedError;
   String get category => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
   String get difficulty => throw _privateConstructorUsedError;
@@ -64,7 +70,9 @@ abstract class $QuizCopyWith<$Res> {
   factory $QuizCopyWith(Quiz value, $Res Function(Quiz) then) =
       _$QuizCopyWithImpl<$Res>;
   $Res call(
-      {String category,
+      {String? id,
+      String selectedAnswer,
+      String category,
       String type,
       String difficulty,
       String question,
@@ -82,6 +90,8 @@ class _$QuizCopyWithImpl<$Res> implements $QuizCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? id = freezed,
+    Object? selectedAnswer = freezed,
     Object? category = freezed,
     Object? type = freezed,
     Object? difficulty = freezed,
@@ -90,6 +100,14 @@ class _$QuizCopyWithImpl<$Res> implements $QuizCopyWith<$Res> {
     Object? incorrect_answers = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectedAnswer: selectedAnswer == freezed
+          ? _value.selectedAnswer
+          : selectedAnswer // ignore: cast_nullable_to_non_nullable
+              as String,
       category: category == freezed
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -124,7 +142,9 @@ abstract class _$QuizCopyWith<$Res> implements $QuizCopyWith<$Res> {
       __$QuizCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String category,
+      {String? id,
+      String selectedAnswer,
+      String category,
       String type,
       String difficulty,
       String question,
@@ -143,6 +163,8 @@ class __$QuizCopyWithImpl<$Res> extends _$QuizCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
+    Object? selectedAnswer = freezed,
     Object? category = freezed,
     Object? type = freezed,
     Object? difficulty = freezed,
@@ -151,6 +173,14 @@ class __$QuizCopyWithImpl<$Res> extends _$QuizCopyWithImpl<$Res>
     Object? incorrect_answers = freezed,
   }) {
     return _then(_Quiz(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectedAnswer: selectedAnswer == freezed
+          ? _value.selectedAnswer
+          : selectedAnswer // ignore: cast_nullable_to_non_nullable
+              as String,
       category: category == freezed
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -183,7 +213,9 @@ class __$QuizCopyWithImpl<$Res> extends _$QuizCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Quiz implements _Quiz {
   const _$_Quiz(
-      {required this.category,
+      {this.id,
+      this.selectedAnswer = '',
+      required this.category,
       required this.type,
       required this.difficulty,
       required this.question,
@@ -193,6 +225,11 @@ class _$_Quiz implements _Quiz {
   factory _$_Quiz.fromJson(Map<String, dynamic> json) =>
       _$_$_QuizFromJson(json);
 
+  @override
+  final String? id;
+  @JsonKey(defaultValue: '')
+  @override
+  final String selectedAnswer;
   @override
   final String category;
   @override
@@ -208,13 +245,18 @@ class _$_Quiz implements _Quiz {
 
   @override
   String toString() {
-    return 'Quiz(category: $category, type: $type, difficulty: $difficulty, question: $question, correct_answer: $correct_answer, incorrect_answers: $incorrect_answers)';
+    return 'Quiz(id: $id, selectedAnswer: $selectedAnswer, category: $category, type: $type, difficulty: $difficulty, question: $question, correct_answer: $correct_answer, incorrect_answers: $incorrect_answers)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Quiz &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.selectedAnswer, selectedAnswer) ||
+                const DeepCollectionEquality()
+                    .equals(other.selectedAnswer, selectedAnswer)) &&
             (identical(other.category, category) ||
                 const DeepCollectionEquality()
                     .equals(other.category, category)) &&
@@ -237,6 +279,8 @@ class _$_Quiz implements _Quiz {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(selectedAnswer) ^
       const DeepCollectionEquality().hash(category) ^
       const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(difficulty) ^
@@ -257,7 +301,9 @@ class _$_Quiz implements _Quiz {
 
 abstract class _Quiz implements Quiz {
   const factory _Quiz(
-      {required String category,
+      {String? id,
+      String selectedAnswer,
+      required String category,
       required String type,
       required String difficulty,
       required String question,
@@ -266,6 +312,10 @@ abstract class _Quiz implements Quiz {
 
   factory _Quiz.fromJson(Map<String, dynamic> json) = _$_Quiz.fromJson;
 
+  @override
+  String? get id => throw _privateConstructorUsedError;
+  @override
+  String get selectedAnswer => throw _privateConstructorUsedError;
   @override
   String get category => throw _privateConstructorUsedError;
   @override

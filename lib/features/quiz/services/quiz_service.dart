@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:trivia/models/quiz/quiz.dart';
+import 'package:uuid/uuid.dart';
 
 final quizServiceProvider = Provider<QuizService>((ref) {
   return QuizService(ref.read);
@@ -33,6 +34,8 @@ class QuizService implements BaseQuizService {
       'type': 'multiple',
     });
 
+    const uuid = Uuid();
+
     try {
       final response = await Dio().getUri(url);
 
@@ -40,6 +43,7 @@ class QuizService implements BaseQuizService {
       // print('Dio data: ' + quizListJson.toString());
       for (var quizJson in quizListJson) {
         Quiz quiz = Quiz.fromJson(quizJson as Map<String, dynamic>);
+        quiz.copyWith(id: uuid.v4());
 
         quizList.add(quiz);
       }

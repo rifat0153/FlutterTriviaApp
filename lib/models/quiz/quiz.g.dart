@@ -8,6 +8,8 @@ part of 'quiz.dart';
 
 _$_Quiz _$_$_QuizFromJson(Map<String, dynamic> json) {
   return _$_Quiz(
+    id: json['id'] as String?,
+    selectedAnswer: json['selectedAnswer'] as String? ?? '',
     category: json['category'] as String,
     type: json['type'] as String,
     difficulty: json['difficulty'] as String,
@@ -20,6 +22,8 @@ _$_Quiz _$_$_QuizFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$_$_QuizToJson(_$_Quiz instance) => <String, dynamic>{
+      'id': instance.id,
+      'selectedAnswer': instance.selectedAnswer,
       'category': instance.category,
       'type': instance.type,
       'difficulty': instance.difficulty,

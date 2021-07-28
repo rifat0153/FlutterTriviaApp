@@ -40,56 +40,49 @@ class _GameView extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final size = MediaQuery.of(context).size;
     final quizMainController = watch(quizMainControllerProvider);
+    final quizListController = context.read(quizListControllerProvider);
 
-    return Container(
-      height: size.height,
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Colors.blueGrey, Colors.blueAccent],
-          stops: [0.3, 1],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        centerTitle: true,
+        title: Text(
+          '${quizList[quizMainController.currentQuestionIndex].category} Quiz',
+          style: _boldTextStyle(),
         ),
       ),
-      child: Column(
-        children: [
-          Text(
-            '${quizList[quizMainController.currentQuestionIndex].category} Quiz',
-            style: _boldTextStyle(),
+      extendBodyBehindAppBar: true,
+      body: Container(
+        height: size.height,
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.blueGrey, Colors.blueAccent],
+            stops: [0.3, 1],
           ),
-          SizedBox(
-            height: 50.h,
-          ),
-          Text(
-            quizList[quizMainController.currentQuestionIndex].question,
-            textAlign: TextAlign.center,
-            style: _boldTextStyle().copyWith().copyWith(color: Colors.white70, fontWeight: FontWeight.w700),
-          ),
-          ..._buildOptions(context, quizList[quizMainController.currentQuestionIndex]),
-        ],
+        ),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 100.h,
+            ),
+            Text(
+              quizList[quizMainController.currentQuestionIndex].question,
+              textAlign: TextAlign.center,
+              style: _boldTextStyle().copyWith().copyWith(color: Colors.white70, fontWeight: FontWeight.w700),
+            ),
+            SizedBox(
+              height: 50.h,
+            ),
+            QuizOptions(quiz: quizList[quizMainController.currentQuestionIndex])
+          ],
+        ),
       ),
     );
-  }
-
-  List<Widget> _buildOptions(BuildContext context, Quiz quiz) {
-    List<String> options = [];
-    List<Widget> widgetList = [];
-
-    options.add(quiz.correct_answer);
-    for (var item in quiz.incorrect_answers) {
-      options.add(item);
-    }
-
-    for (var option in options) {
-      widgetList.add(CheckboxListTile(
-        value: false,
-        onChanged: (value) {},
-        title: Text(option),
-      ));
-    }
-
-    return widgetList;
   }
 
   TextStyle _boldTextStyle() {
@@ -98,5 +91,65 @@ class _GameView extends ConsumerWidget {
       fontSize: 20.sp,
       fontWeight: FontWeight.w400,
     );
+  }
+}
+
+class QuizOptions extends StatefulWidget {
+  QuizOptions({Key? key, required this.quiz}) : super(key: key);
+
+  Quiz quiz;
+
+  @override
+  _QuizOptionsState createState() => _QuizOptionsState();
+}
+
+class _QuizOptionsState extends State<QuizOptions> {
+  List<String> options = [];
+  Map<String, bool> chekcedMap = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _buildOptions(context, widget.quiz);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView.builder(
+          itemCount: options.length,
+          itemBuilder: (_, index) {
+            return CheckboxListTile(
+              key: ValueKey(options[index]),
+              value: chekcedMap[options[index]],
+              onChanged: (value) {
+                chekcedMap[options[index]] = !chekcedMap[options[index]]!;
+                uncheckOtherOptions(options[index]);
+                setState(() {});
+              },
+              title: Text(options[index]),
+            );
+          }),
+    );
+  }
+
+  void uncheckOtherOptions(String selectedKey) {
+    for (var key in chekcedMap.keys) {
+      if (key != selectedKey) {
+        chekcedMap[key] = false;
+      }
+    }
+  }
+
+  void _buildOptions(BuildContext context, Quiz quiz) {
+    options.add(quiz.correct_answer);
+    for (var item in quiz.incorrect_answers) {
+      options.add(item);
+    }
+    options.shuffle();
+
+    for (var option in options) {
+      chekcedMap[option] = false;
+    }
   }
 }
