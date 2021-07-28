@@ -42,10 +42,17 @@ class _GameView extends ConsumerWidget {
 
   final List<Quiz> quizList;
 
+  bool firstRun = true;
+
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final size = MediaQuery.of(context).size;
     QuizMainController quizMainController = watch(quizMainControllerProvider);
+
+    if (firstRun) {
+      quizMainController.buildOptions();
+      firstRun = false;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -84,7 +91,28 @@ class _GameView extends ConsumerWidget {
             SizedBox(
               height: 50.h,
             ),
-            QuizOptions(quiz: quizList[quizMainController.currentQuestionIndex]),
+
+            Expanded(
+              child: ListView.builder(
+                itemCount: quizMainController.options.length,
+                itemBuilder: (_, index) {
+                  return CheckboxListTile(
+                    key: ValueKey(quizMainController.options[index]),
+                    value: quizMainController.chekcedMap[quizMainController.options[index]],
+                    onChanged: (value) {
+                      quizMainController.chekcedMap[quizMainController.options[index]] =
+                          !quizMainController.chekcedMap[quizMainController.options[index]]!;
+                      context
+                          .read(quizMainControllerProvider)
+                          .setCurrentSelectedAnswer(quizMainController.options[index]);
+                      quizMainController.uncheckOtherOptions(quizMainController.options[index]);
+                    },
+                    title: Text(quizMainController.options[index]),
+                  );
+                },
+              ),
+            ),
+            // QuizOptions(quiz: quizList[quizMainController.currentQuestionIndex]),
             Text('Index: ' + quizMainController.currentQuestionIndex.toString()),
             Text('Score: ' + quizMainController.score.toString()),
             _buildQuizControl(context),
@@ -99,36 +127,36 @@ class _GameView extends ConsumerWidget {
 
   Row _buildQuizControl(BuildContext context) {
     return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const CounterView()));
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => const CounterView()));
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.power_rounded),
-                    Text(
-                      'Quiz Quiz',
-                      style: _boldTextStyle(),
-                    ),
-                  ],
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  context.read(quizMainControllerProvider).nextQuestion();
-                },
-                style: TextButton.styleFrom(
-                    backgroundColor: const Color(0xff06D0F3),
-                    padding: EdgeInsets.all(
-                      16.sp,
-                    )),
-                child: const Text('Next Quiz'),
+              const Icon(Icons.power_rounded),
+              Text(
+                'Quiz Quiz',
+                style: _boldTextStyle(),
               ),
             ],
-          );
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            context.read(quizMainControllerProvider).nextQuestion();
+          },
+          style: TextButton.styleFrom(
+              backgroundColor: const Color(0xff06D0F3),
+              padding: EdgeInsets.all(
+                16.sp,
+              )),
+          child: const Text('Next Quiz'),
+        ),
+      ],
+    );
   }
 
   TextStyle _boldTextStyle() {
@@ -140,64 +168,65 @@ class _GameView extends ConsumerWidget {
   }
 }
 
-class QuizOptions extends StatefulWidget {
-  QuizOptions({Key? key, required this.quiz}) : super(key: key);
+// class QuizOptions extends StatefulWidget {
+//   QuizOptions({Key? key, required this.quiz}) : super(key: key);
 
- final Quiz quiz;
+//   final Quiz quiz;
 
-  @override
-  _QuizOptionsState createState() => _QuizOptionsState();
-}
+//   @override
+//   _QuizOptionsState createState() => _QuizOptionsState();
+// }
 
-class _QuizOptionsState extends State<QuizOptions> {
-  List<String> options = [];
-  Map<String, bool> chekcedMap = {};
+// class _QuizOptionsState extends State<QuizOptions> {
+//   List<String> options = [];
+//   Map<String, bool> chekcedMap = {};
 
-  @override
-  void initState() {
-    super.initState();
-    _buildOptions(context, widget.quiz);
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     _buildOptions(context, widget.quiz);
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-          itemCount: options.length,
-          itemBuilder: (_, index) {
-            return CheckboxListTile(
-              key: ValueKey(options[index]),
-              value: chekcedMap[options[index]],
-              onChanged: (value) {
-                setState(() {
-                  chekcedMap[options[index]] = !chekcedMap[options[index]]!;
-                  context.read(quizMainControllerProvider).setCurrentSelectedAnswer(options[index]);
-                  uncheckOtherOptions(options[index]);
-                });
-              },
-              title: Text(options[index]),
-            );
-          }),
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Expanded(
+//       child: ListView.builder(
+//         itemCount: options.length,
+//         itemBuilder: (_, index) {
+//           return CheckboxListTile(
+//             key: ValueKey(options[index]),
+//             value: chekcedMap[options[index]],
+//             onChanged: (value) {
+//               setState(() {
+//                 chekcedMap[options[index]] = !chekcedMap[options[index]]!;
+//                 context.read(quizMainControllerProvider).setCurrentSelectedAnswer(options[index]);
+//                 uncheckOtherOptions(options[index]);
+//               });
+//             },
+//             title: Text(options[index]),
+//           );
+//         },
+//       ),
+//     );
+//   }
 
-  void uncheckOtherOptions(String selectedKey) {
-    for (var key in chekcedMap.keys) {
-      if (key != selectedKey) {
-        chekcedMap[key] = false;
-      }
-    }
-  }
+//   void uncheckOtherOptions(String selectedKey) {
+//     for (var key in chekcedMap.keys) {
+//       if (key != selectedKey) {
+//         chekcedMap[key] = false;
+//       }
+//     }
+//   }
 
-  void _buildOptions(BuildContext context, Quiz quiz) {
-    options.add(quiz.correct_answer);
-    for (var item in quiz.incorrect_answers) {
-      options.add(item);
-    }
-    options.shuffle();
+//   void _buildOptions(BuildContext context, Quiz quiz) {
+//     options.add(quiz.correct_answer);
+//     for (var item in quiz.incorrect_answers) {
+//       options.add(item);
+//     }
+//     options.shuffle();
 
-    for (var option in options) {
-      chekcedMap[option] = false;
-    }
-  }
-}
+//     for (var option in options) {
+//       chekcedMap[option] = false;
+//     }
+//   }
+// }

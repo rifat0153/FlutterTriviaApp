@@ -18,6 +18,14 @@ class QuizMainController extends ChangeNotifier {
   List<String> options = [];
   Map<String, bool> chekcedMap = {};
 
+  Quiz? currentQuiz;
+
+  Quiz? getCurrentQuiz() => currentQuiz;
+  void setCurrentQuiz(Quiz quiz) {
+    currentQuiz = quiz;
+    notifyListeners();
+  }
+
   String currentSelectedAnswer = '';
   int currentQuestionIndex = 0;
   int totalQuestions = 2;
@@ -66,7 +74,7 @@ class QuizMainController extends ChangeNotifier {
       chekcedMap[option] = false;
     }
 
-    notifyListeners();
+    // notifyListeners();
   }
 
   void calculateScore() {
@@ -76,6 +84,9 @@ class QuizMainController extends ChangeNotifier {
 
   void nextQuestion() {
     if (totalQuestions == currentQuestionIndex) {
+      if (!gameEnds) {
+        evaluateResults(currentQuestionIndex);
+      }
       gameEnds = true;
       notifyListeners();
       return;
@@ -83,6 +94,7 @@ class QuizMainController extends ChangeNotifier {
 
     evaluateResults(currentQuestionIndex);
     currentQuestionIndex++;
+    buildOptions();
     notifyListeners();
   }
 
