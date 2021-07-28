@@ -13,19 +13,25 @@ class QuizMainView extends ConsumerWidget {
   Widget build(BuildContext context, ScopedReader watch) {
     final quizListController = watch(quizListControllerProvider);
 
-    return Scaffold(
-      body: SafeArea(
-        child: quizListController.when(
-            data: (data) => _GameView(quizList: data),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (e, s) => Text(e.toString())),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await context.read(quizListControllerProvider.notifier).retrieveQuizList();
-          // context.read(quizListControllerProvider.notifier).index;
-        },
-        child: const Icon(Icons.get_app),
+    return WillPopScope(
+      onWillPop: () {
+        context.read(quizMainControllerProvider).reset();
+        return Future.value(true);
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: quizListController.when(
+              data: (data) => _GameView(quizList: data),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (e, s) => Text(e.toString())),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            await context.read(quizListControllerProvider.notifier).retrieveQuizList();
+            // context.read(quizListControllerProvider.notifier).index;
+          },
+          child: const Icon(Icons.get_app),
+        ),
       ),
     );
   }
@@ -79,39 +85,9 @@ class _GameView extends ConsumerWidget {
               height: 50.h,
             ),
             QuizOptions(quiz: quizList[quizMainController.currentQuestionIndex]),
-            Text(quizMainController.currentQuestionIndex.toString()),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => const CounterView()));
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.power_rounded),
-                      Text(
-                        'Quiz Quiz',
-                        style: _boldTextStyle(),
-                      ),
-                    ],
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    context.read(quizMainControllerProvider).setCurrentQuestionIndex(
-                        context.read(quizMainControllerProvider).currentQuestionIndex + 1);
-                  },
-                  style: TextButton.styleFrom(
-                      backgroundColor: const Color(0xff06D0F3),
-                      padding: EdgeInsets.all(
-                        16.sp,
-                      )),
-                  child: const Text('Next Quiz'),
-                ),
-              ],
-            ),
+            Text('Index: ' + quizMainController.currentQuestionIndex.toString()),
+            Text('Score: ' + quizMainController.score.toString()),
+            _buildQuizControl(context),
             SizedBox(
               height: 100.h,
             ),
@@ -119,6 +95,40 @@ class _GameView extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Row _buildQuizControl(BuildContext context) {
+    return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const CounterView()));
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.power_rounded),
+                    Text(
+                      'Quiz Quiz',
+                      style: _boldTextStyle(),
+                    ),
+                  ],
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  context.read(quizMainControllerProvider).nextQuestion();
+                },
+                style: TextButton.styleFrom(
+                    backgroundColor: const Color(0xff06D0F3),
+                    padding: EdgeInsets.all(
+                      16.sp,
+                    )),
+                child: const Text('Next Quiz'),
+              ),
+            ],
+          );
   }
 
   TextStyle _boldTextStyle() {
@@ -133,7 +143,7 @@ class _GameView extends ConsumerWidget {
 class QuizOptions extends StatefulWidget {
   QuizOptions({Key? key, required this.quiz}) : super(key: key);
 
-  Quiz quiz;
+ final Quiz quiz;
 
   @override
   _QuizOptionsState createState() => _QuizOptionsState();
@@ -159,9 +169,11 @@ class _QuizOptionsState extends State<QuizOptions> {
               key: ValueKey(options[index]),
               value: chekcedMap[options[index]],
               onChanged: (value) {
-                chekcedMap[options[index]] = !chekcedMap[options[index]]!;
-                uncheckOtherOptions(options[index]);
-                setState(() {});
+                setState(() {
+                  chekcedMap[options[index]] = !chekcedMap[options[index]]!;
+                  context.read(quizMainControllerProvider).setCurrentSelectedAnswer(options[index]);
+                  uncheckOtherOptions(options[index]);
+                });
               },
               title: Text(options[index]),
             );

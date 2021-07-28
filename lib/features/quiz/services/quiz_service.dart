@@ -43,9 +43,11 @@ class QuizService implements BaseQuizService {
       // print('Dio data: ' + quizListJson.toString());
       for (var quizJson in quizListJson) {
         Quiz quiz = Quiz.fromJson(quizJson as Map<String, dynamic>);
-        quiz.copyWith(id: uuid.v4());
+        var newQuiz = quiz.copyWith(id: uuid.v4());
 
-        quizList.add(quiz);
+        print(newQuiz.toJson());
+
+        quizList.add(newQuiz);
       }
       return quizList;
     } on SocketException catch (_) {
