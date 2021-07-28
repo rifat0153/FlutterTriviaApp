@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trivia/features/quiz/controllers/quiz_list_controller.dart';
 import 'package:trivia/features/quiz/controllers/quiz_main_controller.dart';
+import 'package:trivia/features/quiz/views/counter_view.dart';
 import 'package:trivia/models/quiz/quiz.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,7 +11,6 @@ class QuizMainView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    QuizMainController quizMainController = watch(quizMainControllerProvider);
     final quizListController = watch(quizListControllerProvider);
 
     return Scaffold(
@@ -23,7 +23,7 @@ class QuizMainView extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await context.read(quizListControllerProvider.notifier).retrieveQuizList();
-          context.read(quizListControllerProvider.notifier).index;
+          // context.read(quizListControllerProvider.notifier).index;
         },
         child: const Icon(Icons.get_app),
       ),
@@ -39,8 +39,7 @@ class _GameView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final size = MediaQuery.of(context).size;
-    final quizMainController = watch(quizMainControllerProvider);
-    final quizListController = context.read(quizListControllerProvider);
+    QuizMainController quizMainController = watch(quizMainControllerProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -53,6 +52,7 @@ class _GameView extends ConsumerWidget {
           style: _boldTextStyle(),
         ),
       ),
+      extendBody: true,
       extendBodyBehindAppBar: true,
       body: Container(
         height: size.height,
@@ -78,7 +78,43 @@ class _GameView extends ConsumerWidget {
             SizedBox(
               height: 50.h,
             ),
-            QuizOptions(quiz: quizList[quizMainController.currentQuestionIndex])
+            QuizOptions(quiz: quizList[quizMainController.currentQuestionIndex]),
+            Text(quizMainController.currentQuestionIndex.toString()),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const CounterView()));
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.power_rounded),
+                      Text(
+                        'Quiz Quiz',
+                        style: _boldTextStyle(),
+                      ),
+                    ],
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    context.read(quizMainControllerProvider).setCurrentQuestionIndex(
+                        context.read(quizMainControllerProvider).currentQuestionIndex + 1);
+                  },
+                  style: TextButton.styleFrom(
+                      backgroundColor: const Color(0xff06D0F3),
+                      padding: EdgeInsets.all(
+                        16.sp,
+                      )),
+                  child: const Text('Next Quiz'),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 100.h,
+            ),
           ],
         ),
       ),

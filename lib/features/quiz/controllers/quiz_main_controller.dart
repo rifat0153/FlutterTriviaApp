@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trivia/features/quiz/services/quiz_service.dart';
 
-final quizMainControllerProvider = Provider<QuizMainController>((ref) {
+final quizMainControllerProvider = ChangeNotifierProvider<QuizMainController>((ref) {
   return QuizMainController(ref.read);
 });
 
@@ -34,6 +34,7 @@ class QuizMainController extends ChangeNotifier {
   void setCurrentQuestionIndex(int value) {
     currentQuestionIndex = value;
     notifyListeners();
+    print(currentQuestionIndex);
   }
 
   bool getGameStarted() => gameStarted;

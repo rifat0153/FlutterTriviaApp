@@ -28,7 +28,7 @@ class QuizService implements BaseQuizService {
     List<Quiz> quizList = [];
 
     final url = Uri.https('www.opentdb.com', '/api.php', {
-      'amount': '20',
+      'amount': '3',
       'category': '21',
       'difficulty': 'medium',
       'type': 'multiple',

@@ -15,24 +15,7 @@ class QuizListController extends StateNotifier<AsyncValue<List<Quiz>>> {
 
   int index = 0;
 
-  void selectedAnswer(String id) {
-    
-  }
-
-  // void toggle(String id) {
-  //   state = [
-  //     for (final todo in state)
-  //       if (todo.id == id)
-  //         Todo(
-  //           id: todo.id,
-  //           completed: !todo.completed,
-  //           description: todo.description,
-  //         )
-  //       else
-  //         todo,
-  //   ];
-  // }
-
+  void selectedAnswer(String id) {}
 
   Future<void> retrieveQuizList() async {
     state = const AsyncValue.loading();
