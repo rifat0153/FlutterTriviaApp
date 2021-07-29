@@ -10,12 +10,12 @@ class QuizMainView extends ConsumerWidget {
   const QuizMainView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final quizListController = watch(quizListControllerProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final quizListController = ref.watch(quizListControllerProvider);
 
     return WillPopScope(
       onWillPop: () {
-        context.read(quizMainControllerProvider).reset();
+        ref.read(quizMainControllerProvider).reset();
         return Future.value(true);
       },
       child: Scaffold(
@@ -27,7 +27,7 @@ class QuizMainView extends ConsumerWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            await context.read(quizListControllerProvider.notifier).retrieveQuizList();
+            await ref.read(quizListControllerProvider.notifier).retrieveQuizList();
             // context.read(quizListControllerProvider.notifier).index;
           },
           child: const Icon(Icons.get_app),
@@ -45,9 +45,9 @@ class _GameView extends ConsumerWidget {
   bool firstRun = true;
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
-    QuizMainController quizMainController = watch(quizMainControllerProvider);
+    QuizMainController quizMainController = ref.watch(quizMainControllerProvider);
 
     if (firstRun) {
       quizMainController.buildOptions();
@@ -102,7 +102,7 @@ class _GameView extends ConsumerWidget {
                     onChanged: (value) {
                       quizMainController.chekcedMap[quizMainController.options[index]] =
                           !quizMainController.chekcedMap[quizMainController.options[index]]!;
-                      context
+                      ref
                           .read(quizMainControllerProvider)
                           .setCurrentSelectedAnswer(quizMainController.options[index]);
                       quizMainController.uncheckOtherOptions(quizMainController.options[index]);
@@ -115,7 +115,37 @@ class _GameView extends ConsumerWidget {
             // QuizOptions(quiz: quizList[quizMainController.currentQuestionIndex]),
             Text('Index: ' + quizMainController.currentQuestionIndex.toString()),
             Text('Score: ' + quizMainController.score.toString()),
-            _buildQuizControl(context),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => const CounterView()));
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.power_rounded),
+                      Text(
+                        'Quiz Quiz',
+                        style: _boldTextStyle(),
+                      ),
+                    ],
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    ref.read(quizMainControllerProvider).nextQuestion();
+                  },
+                  style: TextButton.styleFrom(
+                      backgroundColor: const Color(0xff06D0F3),
+                      padding: EdgeInsets.all(
+                        16.sp,
+                      )),
+                  child: const Text('Next Quiz'),
+                ),
+              ],
+            ),
             SizedBox(
               height: 100.h,
             ),
@@ -125,39 +155,39 @@ class _GameView extends ConsumerWidget {
     );
   }
 
-  Row _buildQuizControl(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const CounterView()));
-          },
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.power_rounded),
-              Text(
-                'Quiz Quiz',
-                style: _boldTextStyle(),
-              ),
-            ],
-          ),
-        ),
-        TextButton(
-          onPressed: () {
-            context.read(quizMainControllerProvider).nextQuestion();
-          },
-          style: TextButton.styleFrom(
-              backgroundColor: const Color(0xff06D0F3),
-              padding: EdgeInsets.all(
-                16.sp,
-              )),
-          child: const Text('Next Quiz'),
-        ),
-      ],
-    );
-  }
+  // Row _buildQuizControl(BuildContext context) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //     children: [
+  //       GestureDetector(
+  //         onTap: () {
+  //           Navigator.push(context, MaterialPageRoute(builder: (_) => const CounterView()));
+  //         },
+  //         child: Row(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             const Icon(Icons.power_rounded),
+  //             Text(
+  //               'Quiz Quiz',
+  //               style: _boldTextStyle(),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       TextButton(
+  //         onPressed: () {
+  //           ref.read(quizMainControllerProvider).nextQuestion();
+  //         },
+  //         style: TextButton.styleFrom(
+  //             backgroundColor: const Color(0xff06D0F3),
+  //             padding: EdgeInsets.all(
+  //               16.sp,
+  //             )),
+  //         child: const Text('Next Quiz'),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   TextStyle _boldTextStyle() {
     return TextStyle(

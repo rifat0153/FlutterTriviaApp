@@ -208,7 +208,7 @@ packages:
       name: flutter_riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.14.0+3"
+    version: "1.0.0-dev.6"
   flutter_screenutil:
     dependency: "direct main"
     description:
@@ -374,7 +374,7 @@ packages:
       name: riverpod
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.14.0+3"
+    version: "1.0.0-dev.6"
   shelf:
     dependency: transitive
     description:
@@ -514,5 +514,5 @@ packages:
     source: hosted
     version: "3.1.0"
 sdks:
-  dart: ">=2.12.0 <3.0.0"
+  dart: ">=2.13.0 <3.0.0"
   flutter: ">=1.17.0"

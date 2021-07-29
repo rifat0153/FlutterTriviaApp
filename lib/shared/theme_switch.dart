@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trivia/features/theme/theme_controller.dart';
 
-class ThemeSwitch extends StatefulWidget {
+class ThemeSwitch extends ConsumerStatefulWidget {
   const ThemeSwitch({Key? key}) : super(key: key);
 
   @override
   _ThemeSwitchState createState() => _ThemeSwitchState();
 }
 
-class _ThemeSwitchState extends State<ThemeSwitch> {
+class _ThemeSwitchState extends ConsumerState<ThemeSwitch> {
   bool darkMode = false;
 
   @override
@@ -26,12 +26,12 @@ class _ThemeSwitchState extends State<ThemeSwitch> {
                     setState(() {
                       darkMode = value;
                     });
-                    watch(themeControllerProvider.notifier).setDarkTheme();
+                    ref.read(themeControllerProvider.notifier).setDarkTheme();
                   } else {
                     setState(() {
                       darkMode = value;
                     });
-                    watch(themeControllerProvider.notifier).setLightTheme();
+                    ref.read(themeControllerProvider.notifier).setLightTheme();
                   }
                 },
               )

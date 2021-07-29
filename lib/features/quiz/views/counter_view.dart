@@ -6,8 +6,8 @@ class CounterView extends ConsumerWidget {
   const CounterView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final quizMainController = watch(quizMainControllerProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final quizMainController = ref.watch(quizMainControllerProvider);
 
     return Container(
       child: Center(

@@ -168,7 +168,7 @@ class _BuildQuizTopicGrid extends ConsumerWidget {
   ];
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
@@ -179,7 +179,7 @@ class _BuildQuizTopicGrid extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: kPadding, vertical: kPadding),
           child: GestureDetector(
             onTap: () {
-              context.read(quizMainControllerProvider).setCurrentQuizCategory(categories[index]);
+              ref.read(quizMainControllerProvider).setCurrentQuizCategory(categories[index]);
               Navigator.of(context).push(MaterialPageRoute(builder: (_) => const QuizMainView()));
             },
             child: Card(

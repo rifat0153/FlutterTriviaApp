@@ -7,8 +7,8 @@ class TriviaView extends ConsumerWidget {
   const TriviaView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final trivia = watch(triviaControllerProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final trivia = ref.watch(triviaControllerProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -25,7 +25,7 @@ class TriviaView extends ConsumerWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            context.read(triviaControllerProvider.notifier).retriveTrivia();
+            ref.read(triviaControllerProvider.notifier).retriveTrivia();
           },
           child: const Icon(Icons.add),
         ),
