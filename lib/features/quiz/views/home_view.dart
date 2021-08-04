@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trivia/features/quiz/config.dart';
+import 'package:trivia/features/quiz/controllers/category_controller.dart';
 import 'package:trivia/features/quiz/controllers/quiz_main_controller.dart';
 import 'package:trivia/features/quiz/views/quiz_main_view.dart';
 import 'package:trivia/shared/theme_switch.dart';
@@ -180,6 +181,9 @@ class _BuildQuizTopicGrid extends ConsumerWidget {
           child: GestureDetector(
             onTap: () {
               ref.read(quizMainControllerProvider).setCurrentQuizCategory(categories[index]);
+              ref.read(categoryNameProvider).state = categories[index];
+              print(ref.read(categoryNameProvider).state);
+              print(ref.read(categoryApiProvider));
               Navigator.of(context).push(MaterialPageRoute(builder: (_) => const QuizMainView()));
             },
             child: Card(

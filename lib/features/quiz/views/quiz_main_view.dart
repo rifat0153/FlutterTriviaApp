@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:trivia/features/quiz/controllers/category_controller.dart';
 import 'package:trivia/features/quiz/controllers/quiz_list_controller.dart';
 import 'package:trivia/features/quiz/controllers/quiz_main_controller.dart';
 import 'package:trivia/features/quiz/views/counter_view.dart';
@@ -47,7 +48,8 @@ class _GameView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
-    QuizMainController quizMainController = ref.watch(quizMainControllerProvider);
+    final quizMainController = ref.watch(quizMainControllerProvider);
+    final categoryName = ref.watch(categoryNameProvider).state;
 
     if (firstRun) {
       quizMainController.buildOptions();
@@ -61,7 +63,7 @@ class _GameView extends ConsumerWidget {
         shadowColor: Colors.transparent,
         centerTitle: true,
         title: Text(
-          '${quizList[quizMainController.currentQuestionIndex].category} Quiz',
+          '$categoryName Quiz',
           style: _boldTextStyle(),
         ),
       ),
@@ -102,9 +104,7 @@ class _GameView extends ConsumerWidget {
                     onChanged: (value) {
                       quizMainController.chekcedMap[quizMainController.options[index]] =
                           !quizMainController.chekcedMap[quizMainController.options[index]]!;
-                      ref
-                          .read(quizMainControllerProvider)
-                          .setCurrentSelectedAnswer(quizMainController.options[index]);
+                      ref.read(quizMainControllerProvider).setCurrentSelectedAnswer(quizMainController.options[index]);
                       quizMainController.uncheckOtherOptions(quizMainController.options[index]);
                     },
                     title: Text(quizMainController.options[index]),

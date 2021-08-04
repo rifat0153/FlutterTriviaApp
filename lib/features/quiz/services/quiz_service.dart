@@ -2,11 +2,10 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:trivia/features/quiz/controllers/category_controller.dart';
 
 import 'package:trivia/models/quiz/quiz.dart';
 import 'package:uuid/uuid.dart';
-
-
 
 final quizServiceProvider = Provider<QuizService>((ref) {
   return QuizService(ref.read);
@@ -31,7 +30,7 @@ class QuizService implements BaseQuizService {
 
     final url = Uri.https('www.opentdb.com', '/api.php', {
       'amount': '3',
-      'category': '21',
+      'category': _read(categoryApiProvider).toString(),
       'difficulty': 'medium',
       'type': 'multiple',
     });
@@ -47,7 +46,7 @@ class QuizService implements BaseQuizService {
         Quiz quiz = Quiz.fromJson(quizJson as Map<String, dynamic>);
         var newQuiz = quiz.copyWith(id: uuid.v4());
 
-        print(newQuiz.toJson());
+        // print(newQuiz.toJson());
 
         quizList.add(newQuiz);
       }
