@@ -4,6 +4,8 @@ import 'package:trivia/features/quiz/controllers/quiz_list_controller.dart';
 import 'package:trivia/features/quiz/services/quiz_service.dart';
 import 'package:trivia/models/quiz/quiz.dart';
 
+
+
 final quizMainControllerProvider = ChangeNotifierProvider<QuizMainController>((ref) {
   return QuizMainController(ref.read);
 });
